@@ -47,6 +47,8 @@ public class SecurityConfig{
                 .build();
     }
 
+    //TODO: Rewrite it to be hardcoded in a way so it can be use for registration later!
+
     @Autowired
     public void configure(
             AuthenticationManagerBuilder authenticationManagerBuilder,
@@ -59,6 +61,7 @@ public class SecurityConfig{
         authenticationManagerBuilder
                 .jdbcAuthentication()
                 .dataSource(dataSource)
+                .withDefaultSchema()
                 .passwordEncoder(passwordEncoder);
     }
 
@@ -77,7 +80,7 @@ public class SecurityConfig{
 
     protected void createUser(String username, PasswordEncoder passwordEncoder, JdbcUserDetailsManager userDetailsManager) {
         final var user = User.builder().username(username).password(passwordEncoder.encode("admin")).roles("R2User").build();
-//        userDetailsManager.deleteUser(username);
+        userDetailsManager.deleteUser(username);
         R2UserRepository.findByUsername(username).ifPresent(R2User -> R2UserRepository.deleteById(R2User.getId()));
         userDetailsManager.createUser(user);
         R2UserRepository.save(new R2User(username, passwordEncoder.encode("admin")));
