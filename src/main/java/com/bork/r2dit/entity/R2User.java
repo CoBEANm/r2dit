@@ -17,10 +17,19 @@ public class R2User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> posts;
 
+    @Column
+    private String password;
+
     public R2User() {
     }
 
-    public R2User(String username){this.username = username;}
+    public R2User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
 
+    public Long getId() {
+        return id;
+    }
 }
