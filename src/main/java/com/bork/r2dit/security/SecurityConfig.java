@@ -3,15 +3,16 @@ package com.bork.r2dit.security;
 import com.bork.r2dit.entity.R2User;
 import com.bork.r2dit.repository.R2UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
@@ -25,12 +26,24 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig{
 
-    private final R2UserRepository R2UserRepository;
+    @Autowired
+    private R2UserRepository R2UserRepository;
+    @Autowired
+    private DataSource dataSource;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    public SecurityConfig(R2UserRepository r2UserRepository) {
-        R2UserRepository = r2UserRepository;
+
+    private static SecurityConfig securityConfig;
+    public static SecurityConfig getInstance() {
+        if (securityConfig == null) {
+            securityConfig = new SecurityConfig();
+        }
+
+        return securityConfig;
     }
 
     //Allow access to H2 console without authentication
@@ -70,20 +83,22 @@ public class SecurityConfig{
         return new JdbcUserDetailsManager(dataSource);
     }
 
-    @Bean
-    public UserDetailsService userDetailsService(DataSource dataSource, PasswordEncoder passwordEncoder) {
-        final var userDetailsManager = new JdbcUserDetailsManager(dataSource);
-        createUser("ivo", passwordEncoder, userDetailsManager);
-        createUser("joe", passwordEncoder, userDetailsManager);
-        return userDetailsManager;
-    }
 
-    protected void createUser(String username, PasswordEncoder passwordEncoder, JdbcUserDetailsManager userDetailsManager) {
-        final var user = User.builder().username(username).password(passwordEncoder.encode("admin")).roles("R2User").build();
+    public void createUser(String username, String password) {
+        final var userDetailsManager = userDetailsManager(dataSource);
+
+        //Previous matching user will be deleted
+        final var user = User.builder().username(username).password(passwordEncoder.encode(password)).roles("R2User").build();
         userDetailsManager.deleteUser(username);
         R2UserRepository.findByUsername(username).ifPresent(R2User -> R2UserRepository.deleteById(R2User.getId()));
         userDetailsManager.createUser(user);
-        R2UserRepository.save(new R2User(username, passwordEncoder.encode("admin")));
+        R2UserRepository.save(new R2User(username, passwordEncoder.encode(password)));
     }
 
+    @Bean
+    public CommandLineRunner commandLineRunner() {
+        return args -> {
+            createUser("admin", "admin");
+        };
+    }
 }
