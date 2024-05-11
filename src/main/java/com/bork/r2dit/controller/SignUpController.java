@@ -25,6 +25,6 @@ public class SignUpController {
     @PostMapping("/signup")
     public String signUp(@RequestParam String username, @RequestParam String password) {
         securityConfig.createUser(username, password);
-        return "redirect:/login";
+        return "redirect:/";
     }
 }

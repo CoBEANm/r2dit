@@ -51,16 +51,14 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers(antMatcher("/h2-console/**")).permitAll()
-                                .anyRequest().authenticated()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/h2-console/**", "/", "signup").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .formLogin(withDefaults())
                 .build();
     }
-
-    //TODO: Rewrite it to be hardcoded in a way so it can be use for registration later!
 
     @Autowired
     public void configure(
