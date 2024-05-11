@@ -21,7 +21,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import javax.sql.DataSource;
 
 import static org.springframework.security.config.Customizer.withDefaults;
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 
 @Configuration
@@ -52,7 +51,7 @@ public class SecurityConfig{
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/h2-console/**", "/", "signup").permitAll()
+                        .requestMatchers("/h2-console/**", "/", "signup", "/styles.css").permitAll()
                         .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
