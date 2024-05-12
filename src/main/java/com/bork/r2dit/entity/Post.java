@@ -10,7 +10,7 @@ public class Post {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     private R2User user;
 
     @Column(nullable = false)
@@ -22,9 +22,10 @@ public class Post {
     public Post() {
     }
 
-    public Post(String title, String content) {
+    public Post(String title, String content, R2User userId) {
         this.title = title;
         this.content = content;
+        this.user = userId;
     }
 
 }
