@@ -56,6 +56,7 @@ public class SecurityConfig{
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .formLogin(withDefaults())
+                .logout(logout -> logout.logoutSuccessUrl("/"))
                 .build();
     }
 
@@ -64,10 +65,7 @@ public class SecurityConfig{
             AuthenticationManagerBuilder authenticationManagerBuilder,
             DataSource dataSource,
             PasswordEncoder passwordEncoder
-
-
     ) throws Exception {
-
         authenticationManagerBuilder
                 .jdbcAuthentication()
                 .dataSource(dataSource)
