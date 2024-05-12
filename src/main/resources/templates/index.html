@@ -35,5 +35,13 @@
         </ul>
     </nav>
 
+    <div th:each="post : ${posts}" class="post box text-light">
+        <h5 class="card-title" th:text="${post.title}">title</h5>
+        <br>
+        <p class="card-text" th:text="${post.user}">username</p>
+        <hr>
+        <p class="card-text" th:text="${post.content}" style="white-space: pre-wrap">content</p>
+        <br>
+    </div>
 </body>
 </html>

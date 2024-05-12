@@ -28,4 +28,19 @@ public class Post {
         this.user = userId;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getUser() {
+        return user.getName();
+    }
+
+    public String getContent() {
+        return content;
+    }
 }
