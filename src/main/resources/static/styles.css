@@ -9,7 +9,7 @@
 
 .navbar{
     padding: 10px;
-    background-color: #212529 !important;
+    background-color: #212529;
     border-bottom: 2px solid #343a40;
 }
 
@@ -21,9 +21,18 @@ body{
     margin: 0 !important;
 }
 
-.post{
+.innerBox{
     margin-top: 50px;
     max-width: 650px;
     background-color: #212529;
     border: 3px solid #343a40;
+}
+
+.inputBox{
+    background-color: #343a40;
+    border: 1px solid #343a40;
+}
+.inputBox:focus{
+    background-color: #343a40;
+    border: 1px solid #343a40;
 }

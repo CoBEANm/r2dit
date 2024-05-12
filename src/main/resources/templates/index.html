@@ -35,7 +35,7 @@
         </ul>
     </nav>
 
-    <div th:each="post : ${posts}" class="post box text-light">
+    <div th:each="post : ${posts}" class="innerBox box text-light">
         <h5 class="card-title" th:text="${post.title}">title</h5>
         <br>
         <p class="card-text" th:text="${post.user}">username</p>
