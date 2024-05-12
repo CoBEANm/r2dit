@@ -69,7 +69,8 @@ public class SecurityConfig{
         authenticationManagerBuilder
                 .jdbcAuthentication()
                 .dataSource(dataSource)
-                .withDefaultSchema()
+                .usersByUsernameQuery("select username,password,enabled from users where username = ?")
+                .authoritiesByUsernameQuery("select username,authority from authorities where username = ?")
                 .passwordEncoder(passwordEncoder);
     }
 
@@ -90,10 +91,10 @@ public class SecurityConfig{
         R2UserRepository.save(new R2User(username, passwordEncoder.encode(password)));
     }
 
-    @Bean
-    public CommandLineRunner commandLineRunner() {
-        return args -> {
-            createUser("admin", "admin");
-        };
-    }
+//    @Bean
+//    public CommandLineRunner commandLineRunner() {
+//        return args -> {
+//            createUser("admin", "admin");
+//        };
+//    }
 }

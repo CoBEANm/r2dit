@@ -34,7 +34,7 @@
     </ul>
 </nav>
 <form th:action="@{/createPost}" method="POST">
-    <div class="box">
+    <div class="box innerBox text-light">
         <div th:if="${error}" class="alert alert-danger d-flex align-items-center alert-dismissible" role="alert">
             <div th:text="${error}">Test</div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -42,10 +42,10 @@
 
         <div>
             <label class="form-label" for="title">Title:</label>
-            <input type="text" class="form-control" id="title" name="title" th:value="${title}" required><br>
+            <input type="text" class="form-control inputBox" id="title" name="title" th:value="${title}" required><br>
 
             <label class="form-label" for="content">Content:</label>
-            <textarea type="text" class="form-control" id="content" name="content" th:value="${content}" required></textarea>
+            <textarea type="text" class="form-control inputBox" id="content" name="content" th:value="${content}" required></textarea>
             <br>
         </div>
 

@@ -32,6 +32,7 @@ body{
     background-color: #343a40;
     border: 1px solid #343a40;
 }
+
 .inputBox:focus{
     background-color: #343a40;
     border: 1px solid #343a40;
