@@ -1,6 +1,7 @@
 package com.bork.r2dit.entity;
 
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Value;
 
 @Entity
 public class Post {
@@ -18,6 +19,10 @@ public class Post {
 
     @Column
     private String content;
+
+    @Column
+    @Value("${votes:0}")
+    private int votes;
 
     public Post() {
     }
@@ -42,5 +47,13 @@ public class Post {
 
     public String getContent() {
         return content;
+    }
+
+    public int getVotes() {
+        return votes;
+    }
+
+    public void setVotes(int votes) {
+        this.votes = votes;
     }
 }

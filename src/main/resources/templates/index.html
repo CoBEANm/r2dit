@@ -42,6 +42,43 @@
         <hr>
         <p class="card-text" th:text="${post.content}" style="white-space: pre-wrap">content</p>
         <br>
+
+        <div id="postBtn">
+            <div>
+                <div th:unless="${username == 'Not logged in'}" class="vote">
+                    <form action="/" method="post">
+                        <input type="hidden" name="vote" value="up">
+                        <input type="hidden" name="id" th:value="${post.id}">
+                        <button class="btn btn-success postBtn" type="submit">
+                            ↑
+                        </button>
+                    </form>
+                    <form action="/" method="post">
+                        <input type="hidden" name="vote" value="down">
+                        <input type="hidden" name="id" th:value="${post.id}">
+                        <button class="btn btn-danger postBtn" type="submit">
+                            ↓
+                        </button>
+                    </form>
+                </div>
+
+<!--                Not logged in-->
+                <div th:if="${username == 'Not logged in'}" class="vote">
+                    <button class="btn btn-success disabled postBtn">
+                        ↑
+                    </button>
+                    <button class="btn btn-danger disabled postBtn">
+                        ↓
+                    </button>
+                </div>
+            </div>
+            <div>
+                <span th:text="${post.votes}" id="votes">0</span> votes
+            </div>
+            <a th:href="@{'/editPost/' + ${post.id}}" class="btn btn-light postBtn" th:if="${username == post.user}">Edit post</a>
+            <a class="btn btn-light disabled postBtn" th:unless="${username == post.user}">Edit post</a>
+        </div>
+
     </div>
 </body>
 </html>
