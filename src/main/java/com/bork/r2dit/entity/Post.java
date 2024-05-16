@@ -3,6 +3,8 @@ package com.bork.r2dit.entity;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.List;
+
 @Entity
 public class Post {
 
@@ -14,15 +16,16 @@ public class Post {
     @JoinColumn(name = "userId")
     private R2User user;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Vote> votes;
+
+
+
     @Column(nullable = false)
     private String title;
 
     @Column
     private String content;
-
-    @Column
-    @Value("${votes:0}")
-    private int votes;
 
     public Post() {
     }
@@ -50,10 +53,6 @@ public class Post {
     }
 
     public int getVotes() {
-        return votes;
-    }
-
-    public void setVotes(int votes) {
-        this.votes = votes;
+        return votes.stream().mapToInt(Vote::getValue).sum();
     }
 }

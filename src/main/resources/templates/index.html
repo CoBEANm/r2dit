@@ -45,31 +45,35 @@
 
         <div id="postBtn">
             <div>
-                <div th:unless="${username == 'Not logged in'}" class="vote">
-                    <form action="/" method="post">
+                <div class="vote">
+                    <form action="/" method="post" th:unless="${username == 'Not logged in'} OR ${votes.get(post.id) == 'up'}">
+                        <input type="hidden" name="user" value="${username}">
                         <input type="hidden" name="vote" value="up">
                         <input type="hidden" name="id" th:value="${post.id}">
                         <button class="btn btn-success postBtn" type="submit">
                             ↑
                         </button>
                     </form>
-                    <form action="/" method="post">
+                    <form action="">
+                        <button class="btn btn-success disabled postBtn" th:if="${username == 'Not logged in'} OR ${votes.get(post.id) == 'up'}">
+                            ↑
+                        </button>
+                    </form>
+
+
+                    <form action="/" method="post" th:unless="${username == 'Not logged in'} OR ${votes.get(post.id) == 'down'}">
+                        <input type="hidden" name="user" value="${username}">
                         <input type="hidden" name="vote" value="down">
                         <input type="hidden" name="id" th:value="${post.id}">
                         <button class="btn btn-danger postBtn" type="submit">
                             ↓
                         </button>
                     </form>
-                </div>
-
-<!--                Not logged in-->
-                <div th:if="${username == 'Not logged in'}" class="vote">
-                    <button class="btn btn-success disabled postBtn">
-                        ↑
-                    </button>
-                    <button class="btn btn-danger disabled postBtn">
-                        ↓
-                    </button>
+                    <form action="">
+                        <button class="btn btn-danger disabled postBtn" th:if="${username == 'Not logged in'} OR ${votes.get(post.id) == 'down'}">
+                            ↓
+                        </button>
+                    </form>
                 </div>
             </div>
             <div>

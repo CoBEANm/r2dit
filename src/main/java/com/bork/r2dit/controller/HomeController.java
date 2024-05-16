@@ -1,7 +1,14 @@
 package com.bork.r2dit.controller;
 
+import com.bork.r2dit.entity.Post;
+import com.bork.r2dit.entity.R2User;
+import com.bork.r2dit.entity.Vote;
 import com.bork.r2dit.repository.PostRepository;
+import com.bork.r2dit.repository.R2UserRepository;
+import com.bork.r2dit.repository.VoteRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -10,46 +17,64 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 @Controller
 public class HomeController {
 
-    private final PostRepository postRepository;
+    @Autowired
+    private PostRepository postRepository;
+    @Autowired
+    private R2UserRepository userRepository;
+    @Autowired
+    private VoteRepository voteRepository;
 
-    public HomeController(PostRepository postRepository) {
-        this.postRepository = postRepository;
-    }
 
     @GetMapping("/")
     public String home(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
-        model.addAttribute("posts", postRepository.findAll());
-
-        if (name.equals("anonymousUser")) {
-            model.addAttribute("username", "Not logged in");
-            return "index";
+        R2User user = null;
+        if (!name.equals("anonymousUser")) {
+            user = userRepository.findByUsername(name).get();
         }
-
-        model.addAttribute("username", name);
+        List<Post> posts = postRepository.findAll(Sort.by("id").descending());
+        Map<Long, String> votes = new HashMap<>();
+        if (user != null) {
+            for (Post post : posts) {
+                Vote vote = voteRepository.findByUserAndPost(user, post);
+                if (vote != null) {
+                    votes.put(post.getId(), vote.getValue() == 1 ? "up" : "down");
+                }
+            }
+        }
+        model.addAttribute("posts", posts);
+        model.addAttribute("votes", votes);
+        model.addAttribute("username", name.equals("anonymousUser") ? "Not logged in" : name);
         return "index";
     }
 
     @Transactional
     @PostMapping("/")
     public String vote(@RequestParam long id, @RequestParam String vote) {
-        if (vote.equals("up")) {
-            postRepository.findById(id).ifPresent(post -> {
-                post.setVotes(post.getVotes() + 1);
-                postRepository.save(post);
-            });
-        } else {
-            postRepository.findById(id).ifPresent(post -> {
-                post.setVotes(post.getVotes() - 1);
-                postRepository.save(post);
-            });
-        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        R2User user = userRepository.findByUsername(username).get();
+        Post post = postRepository.findById(id).get();
 
+        Vote existingVote = voteRepository.findByUserAndPost(user, post);
+        if (existingVote != null) {
+            existingVote.setValue(vote.equals("up") ? 1 : -1);
+        } else {
+            Vote newVote = new Vote();
+            newVote.setUser(user);
+            newVote.setPost(post);
+            newVote.setValue(vote.equals("up") ? 1 : -1);
+            voteRepository.save(newVote);
+        }
 
         return "redirect:/";
     }

@@ -17,6 +17,10 @@ public class R2User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> posts;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Vote> votes;
+
+
     @Column(nullable = false)
     private String password;
 
