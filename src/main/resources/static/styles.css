@@ -50,5 +50,10 @@ body{
 
 .vote{
     display: flex;
+}
 
+textarea{
+    height: 250px;
+    min-height: 250px;
+    overflow: hidden;
 }

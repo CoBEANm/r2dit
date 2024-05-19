@@ -79,8 +79,8 @@
             <div>
                 <span th:text="${post.votes}" id="votes">0</span> votes
             </div>
-            <a th:href="@{'/editPost/' + ${post.id}}" class="btn btn-light postBtn" th:if="${username == post.user}">Edit post</a>
-            <a class="btn btn-light disabled postBtn" th:unless="${username == post.user}">Edit post</a>
+            <a th:href="@{'/editPost/' + ${post.id}}" class="btn btn-outline-light postBtn" th:if="${username == post.user}">Edit post</a>
+            <a class="btn btn-outline-light disabled postBtn" th:unless="${username == post.user}">Edit post</a>
         </div>
 
     </div>

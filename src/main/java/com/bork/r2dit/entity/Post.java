@@ -19,8 +19,6 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Vote> votes;
 
-
-
     @Column(nullable = false)
     private String title;
 
@@ -35,24 +33,25 @@ public class Post {
         this.content = content;
         this.user = userId;
     }
-
     public long getId() {
         return id;
     }
-
     public String getTitle() {
         return title;
     }
-
     public String getUser() {
         return user.getName();
     }
-
     public String getContent() {
         return content;
     }
-
     public int getVotes() {
         return votes.stream().mapToInt(Vote::getValue).sum();
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public void setContent(String content) {
+        this.content = content;
     }
 }
