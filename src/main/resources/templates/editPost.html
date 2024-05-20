@@ -20,20 +20,14 @@
     </ul>
     <ul class="navbar-nav ms-auto mb-1 mb-sm-0">
         <li class="nav-item">
-            <a class="nav-link active" th:href="@{/createPost}">Edit Post</a>
+            <a class="nav-link active" th:href="@{/post/create}">Edit Post</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" th:unless="${username == 'Not logged in'}" th:href="@{/logout}">Log Out</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" th:if="${username == 'Not logged in'}" th:href="@{/login}">Log In</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" th:if="${username == 'Not logged in'}" th:href="@{/signup}">Sign Up</a>
-        </li>
     </ul>
 </nav>
-<form th:action="@{/editPost}" method="POST" th:object="${post}">
+<form th:action="@{/post/edit}" method="POST" th:object="${post}">
     <div class="box innerBox text-light">
         <div th:if="${error}" class="alert alert-danger d-flex align-items-center alert-dismissible" role="alert">
             <div th:text="${error}">Test</div>

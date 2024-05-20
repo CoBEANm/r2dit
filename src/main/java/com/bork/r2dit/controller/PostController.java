@@ -23,12 +23,12 @@ public class PostController {
     @Autowired
     private R2UserRepository r2UserRepository;
 
-    @GetMapping("/createPost")
+    @GetMapping("/post/create")
     public String createPost() {
         return "createPost";
     }
 
-    @PostMapping("/createPost")
+    @PostMapping("/post/create")
     public String createPost(@RequestParam String title,@RequestParam String content) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         R2User user = r2UserRepository.findByUsername(auth.getName()).get();
@@ -37,14 +37,15 @@ public class PostController {
         return "redirect:/";
     }
 
-    @GetMapping("/editPost/{id}")
+    @PreAuthorize("@securityService.isAuthor(#id)")
+    @GetMapping("/post/edit/{id}")
     public String editPost(@PathVariable long id, Model model) {
         Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid post Id:" + id));
         model.addAttribute("post", post);
         return "editPost";
     }
 
-    @PostMapping("/editPost")
+    @PostMapping("/post/edit")
     public String editPost(@RequestParam String title, @RequestParam String content, @RequestParam long id) {
         postRepository.findById(id).ifPresent(post -> {
             post.setTitle(title);

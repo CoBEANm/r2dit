@@ -32,6 +32,24 @@ public class HomeController {
     @Autowired
     private VoteRepository voteRepository;
 
+    @GetMapping("/login")
+    public String login(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+
+        model.addAttribute("username", name.equals("anonymousUser") ? "Not logged in" : name);
+
+        return "login";
+    }
+
+    @GetMapping("/error")
+    public String error(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+
+        model.addAttribute("username", name.equals("anonymousUser") ? "Not logged in" : name);
+        return "error";
+    }
 
     @GetMapping("/")
     public String home(Model model) {

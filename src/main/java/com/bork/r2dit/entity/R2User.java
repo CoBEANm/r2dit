@@ -40,4 +40,8 @@ public class R2User {
     public String getName() {
         return username;
     }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
 }

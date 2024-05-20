@@ -9,4 +9,5 @@ public interface R2UserRepository extends JpaRepository<R2User, Long> {
 
     Optional<R2User> findByUsername(String username);
     
+
 }
