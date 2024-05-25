@@ -16,7 +16,9 @@
         <li class="nav-item">
             <a class="nav-link navbar-brand" th:href="@{/}">R2dit</a>
         </li>
-        <span class="navbar-text" th:text="${username}">test</span>
+        <li th:unless="${username == 'Not logged in'}">
+            <a class="nav-link" th:href="@{'/user/profile/' + ${user.id}}" th:text="${username}" >test</a>
+        </li>
     </ul>
     <ul class="navbar-nav ms-auto mb-1 mb-sm-0">
         <li class="nav-item">

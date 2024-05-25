@@ -51,7 +51,7 @@ public class SecurityConfig{
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/h2-console/**", "/", "signup", "/styles.css", "/error").permitAll()
+                        .requestMatchers("/h2-console/**", "/", "signup", "/styles.css", "/error","/user/profile/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))

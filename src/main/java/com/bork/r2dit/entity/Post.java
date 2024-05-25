@@ -54,4 +54,7 @@ public class Post {
     public void setContent(String content) {
         this.content = content;
     }
+    public long getUserId() {
+        return user.getId();
+    }
 }

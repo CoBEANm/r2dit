@@ -18,10 +18,11 @@
                 <a class="nav-link navbar-brand" th:href="@{/}">R2dit</a>
             </li>
             <li th:unless="${username == 'Not logged in'}">
-                <a class="nav-link" th:href="@{'/user/profile/' + ${user.id}}" th:text="${username}" >test</a>
+                <a class="nav-link active" th:href="@{'/user/profile/' + ${user.id}}" th:text="${username}" >test</a>
             </li>
             <span th:if="${username == 'Not logged in'}" class="navbar-text" th:text="${username}">test</span>
         </ul>
+
         <ul class="navbar-nav ms-auto mb-1 mb-sm-0">
             <li class="nav-item">
                 <a class="nav-link" th:unless="${username == 'Not logged in'}" th:href="@{/post/create}">Create Post</a>
@@ -41,7 +42,7 @@
     <div th:each="post : ${posts}" class="innerBox box text-light">
         <h5 class="card-title" th:text="${post.title}">title</h5>
         <br>
-        <a class="nav-link" th:href="@{'/user/profile/' + ${post.userId}}" th:text="${post.user}" >test</a>
+        <a class="nav-link" th:href="@{'/user/profile/' + ${post.userId}}" th:text="${post.user}" >username</a>
         <hr>
         <p class="card-text" th:text="${post.content}" style="white-space: pre-wrap">content</p>
         <br>

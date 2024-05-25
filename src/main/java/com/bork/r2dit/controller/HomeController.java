@@ -26,11 +26,11 @@ import java.util.Map;
 public class HomeController {
 
     @Autowired
-    private PostRepository postRepository;
+    protected PostRepository postRepository;
     @Autowired
-    private R2UserRepository userRepository;
+    protected R2UserRepository userRepository;
     @Autowired
-    private VoteRepository voteRepository;
+    protected VoteRepository voteRepository;
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -71,6 +71,7 @@ public class HomeController {
         }
         model.addAttribute("posts", posts);
         model.addAttribute("votes", votes);
+        model.addAttribute("user", user);
         model.addAttribute("username", name.equals("anonymousUser") ? "Not logged in" : name);
         return "index";
     }
