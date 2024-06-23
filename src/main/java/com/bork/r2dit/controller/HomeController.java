@@ -46,7 +46,9 @@ public class HomeController {
     public String error(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
+        R2User user = userRepository.findByUsername(name).get();
 
+        model.addAttribute("user", user);
         model.addAttribute("username", name.equals("anonymousUser") ? "Not logged in" : name);
         return "error";
     }

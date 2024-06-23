@@ -19,6 +19,10 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Vote> votes;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private Image image;
+
     @Column(nullable = false)
     private String title;
 
@@ -28,10 +32,11 @@ public class Post {
     public Post() {
     }
 
-    public Post(String title, String content, R2User userId) {
+    public Post(String title, String content, R2User userId, Image image) {
         this.title = title;
         this.content = content;
         this.user = userId;
+        this.image = image;
     }
     public long getId() {
         return id;
@@ -56,5 +61,11 @@ public class Post {
     }
     public long getUserId() {
         return user.getId();
+    }
+    public long getImageId() {
+        return image.getId();
+    }
+    public Image getImage() {
+        return image;
     }
 }

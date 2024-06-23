@@ -29,7 +29,7 @@
         </li>
     </ul>
 </nav>
-<form th:action="@{/post/create}" method="POST">
+<form th:action="@{/post/create}" method="POST" enctype="multipart/form-data">
     <div class="box innerBox text-light">
         <div th:if="${error}" class="alert alert-danger d-flex align-items-center alert-dismissible" role="alert">
             <div th:text="${error}">Test</div>
@@ -43,6 +43,11 @@
             <label class="form-label" for="content">Content:</label>
             <textarea type="text" class="form-control inputBox text-light" id="content" name="content" th:value="${content}" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' required></textarea>
             <br>
+        </div>
+
+        <div>
+            <label class="form-label" for="image">Image:</label>
+            <input type="file" class="form-control inputBox text-light" id="image" name="image" required><br>
         </div>
 
         <button class="btn btn-primary mb-3" type="submit" style="">Confirm</button>

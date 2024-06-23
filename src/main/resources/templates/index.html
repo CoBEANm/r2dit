@@ -44,7 +44,10 @@
         <a class="nav-link" th:href="@{'/user/profile/' + ${post.userId}}" th:text="${post.user}" >test</a>
         <hr>
         <p class="card-text" th:text="${post.content}" style="white-space: pre-wrap">content</p>
+        <img th:if="${post.image != null}" th:src="@{'/image/' + ${post.imageId}}" alt="Post image">
         <br>
+
+
 
         <div id="postBtn">
             <div>
@@ -62,7 +65,6 @@
                             ↑
                         </button>
                     </form>
-
 
                     <form action="/" method="post" th:unless="${username == 'Not logged in'} OR ${votes.get(post.id) == 'down'}">
                         <input type="hidden" name="user" value="${username}">
