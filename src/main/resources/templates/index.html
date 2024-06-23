@@ -44,7 +44,7 @@
         <a class="nav-link" th:href="@{'/user/profile/' + ${post.userId}}" th:text="${post.user}" >test</a>
         <hr>
         <p class="card-text" th:text="${post.content}" style="white-space: pre-wrap">content</p>
-        <img th:if="${post.image != null}" th:src="@{'/image/' + ${post.imageId}}" alt="Post image">
+        <img class="rounded mx-auto d-block" th:if="${post.image != null}" th:src="@{'/image/' + ${post.imageId}}" alt="Post image">
         <br>
 
 
